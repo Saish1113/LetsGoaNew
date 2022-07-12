@@ -14,6 +14,7 @@ function Logout() {
       Axios.get("http://localhost:3001/logout").then((response) => {
                 console.log(response);
                 toast.error(response.data);
+                localStorage.removeItem('status');
                 history.push('/sign-up');
                 
               }

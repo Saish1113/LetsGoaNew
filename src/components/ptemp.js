@@ -25,15 +25,18 @@ function App() {
           if (response.data.loggedIn == true) {
             //setSessionUser(response.data.user[0]);
             console.log(response.data.user[0]);
-            var name=response.data.user[0].fullname;
-            var email=response.data.user[0].email;
+            setUserName(response.data.user[0].username);
+            setName(response.data.user[0].fullname);
+            setEmail(response.data.user[0].email);
+            //setUserName(response.data.user[0].username);
           }
         });
       }, []);
 
 
     const history = useHistory();
-
+    
+    const [User,setUserName]=useState('');
     const [name, setName]=useState('');
     const [Address, setAddress]=useState('');
     const [Age, setAge]=useState('');
@@ -41,55 +44,57 @@ function App() {
     const [Adhar, setAdhar]=useState('');
     const [Email, setEmail]=useState('');
     const [errmsg,setAErrmsg]=useState('');
+    const [Gender, setGender]=useState('');
+    const [loginStatus, setLoginStatus] = useState("");
 
     const handleSubmition=(e)=>{
+      
         e.preventDefault();
       
-        if(!name || !Address || !Age || !Dob || !Adhar || !Email ){
-          alert("Please Fill all the fields");
+        if(!name || !Address || !Age || !Dob || !Adhar || !Email || !Gender ){
+
+            alert("please fill all the field");
         }
-        else if(Age<0 || Age==0){
-            alert("Invalid age entered")
+        else if(Age<0|| Age==0){
+            alert("Invaid age entered");
         }
-        else if(Adhar.length!=12){
-            alert("Enter proper Adhar number")
+
+        else if(Adhar.length!=12)
+        {
+            alert("enter proper adhar card no ");
         }
+
+        else if(Dob>"2022-06-18")
+        {
+            alert("enter proper Date of Birth");
+        }
+
         else{
+        register();
         history.push("/Flight");
         }
 
     }
-    /*
-    const handleClick=(e)=>{
-        console.log("Refresh prevented");
-        history.push('/Flight')
-    }*/
 
+    const register = () => {
+        Axios.post("http://localhost:3001/personaldetails", {
+            name: name,
+            address: Address,
+            age:Age,
+            email:Email,
+            aadhar: Adhar,
+            dob: Dob,
+            gender:Gender,
+            user:User,
 
-
-            /// Example starter JavaScript for disabling form submissions if there are invalid fields/
-            /*(function() {
-            'use strict';
-            window.addEventListener('load', function() {
-                // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                //var name2 = document.getElementById('fullname').value; 
-                var forms = document.getElementsByClassName('needs-validation');
-                // Loop over them and prevent submission
-                var validation = Array.prototype.filter.call(forms, function(form) {
-                form.addEventListener('submit', function(event) {
-                    if (form.checkValidity() === false) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    }
-                    else{
-                        history.push('/Flight')
-                    }
-                    form.classList.add('was-validated');
-                }, false);
-                });
-            }, false);
-            }
-            )();*/
+         
+          //password: passwordReg,
+        }).then((response) => {
+          console.log(response.data);
+          setLoginStatus({message: "Personal Details is successfull"});
+          console.log(loginStatus);
+        });
+      };
 
   return (
 
@@ -114,7 +119,7 @@ function App() {
                      <form class="needs-validation" noValidate>
                         <div class="form-group">
                             <label for="exampleInputEmail1"><h3><i>Name</i></h3></label>
-                            <input type="text" class="form-control" id="fullname" aria-describedby="enter full name" placeholder="Enter Full Name" onChange={e=>setName(e.target.value)} required/>
+                            <input type="text" class="form-control" id="fullname" aria-describedby="enter full name" placeholder={name}  disabled/>
                             <div class="invalid-feedback">
                                 Please provide a valid name.
                             </div>
@@ -157,20 +162,21 @@ function App() {
                      
                         <div class="form-group">
                             <label for="exampleInputEmail1"><h3><i>Email address</i></h3></label>
-                            <input type="email" class="form-control" id="email_id" aria-describedby="emailHelp" placeholder="Enter email"onChange={e=>setEmail(e.target.value)} required />
+                            <input type="email" class="form-control" id="email_id" aria-describedby="emailHelp" placeholder={Email} required />
                             <small id="email_tip" class="form-text text-muted">We'll never share your email with anyone else.</small>
                             <div class="invalid-feedback">
                                 Please provide a valid zip.
                             </div>
                         </div>
 
+                       
                         <label><i><h3>Gender</h3></i></label>
                         <div class="custom-control custom-radio">
                             
-                            <input type="radio" id="gender" name="customRadio" class="custom-control-input" required/>
+                            <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input" value="Male" onChange={e=>setGender(e.target.value)}/>
                             <label class="custom-control-label" for="customRadio1"><h4>Male</h4></label>
                            
-                            <input type="radio" id="gender" name="customRadio" class="custom-control-input" required/>
+                            <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input"  value="FeMale" onChange={e=>setGender(e.target.value)}/>
                             <label class="custom-control-label" for="customRadio2"><h4>Female</h4></label>
                         </div>
                         

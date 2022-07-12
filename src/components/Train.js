@@ -18,6 +18,16 @@ import Axios from "axios";
 
 function App() {
 
+    useEffect(() => {
+        console.log("I reached bro");
+        Axios.get("http://localhost:3001/temp").then((response) => {
+        //console.log(response.data[0].username);
+        console.log("inside temp");
+        setUserName(response.data[0].username);
+    
+    });
+}, []);
+
 
 
   
@@ -43,7 +53,7 @@ function App() {
                 }, false);
                 })();
                 */
-
+                const [User,setUserName]=useState('');
                 const [Date, setDate]=useState('');
                 const [State, setState]=useState('');
                 const [Boarding, setBoarding]=useState('');
@@ -114,6 +124,7 @@ function App() {
           Adult:Adult,
           Children:Children,
           Class:Class,
+          User:User,
          
           //password: passwordReg,
         }).then((response) => {
@@ -121,7 +132,23 @@ function App() {
           setLoginStatus({message: "Personal Details is successfull"});
           console.log(loginStatus);
         });
+        updateActivityTable();
       };
+
+      
+const updateActivityTable=()=>{
+    console.log("Inside new Function");
+    Axios.post("http://localhost:3001/activity_table", {
+        User:User,
+        Mode:"Train",
+       
+        //password: passwordReg,
+      }).then((response) => {
+        console.log(response);
+        //setLoginStatus({message: "Personal Details is successfull"});
+        //console.log(loginStatus);
+      });
+}
 
 
   return (
@@ -129,18 +156,7 @@ function App() {
     
     
     <div className="UserDetails3">
-      <i><b><h1> Goa Tour</h1></b></i>
-      <div id="d0">
-        
-       
-      
-        <button id="home"><b>HOME</b></button>{'  '}
-        <button id="gallery"><b>GALLERY</b></button>{'  '}
-        <button id="about us"><b>ABOUT US</b></button>{'  '}
-        <button id="signin"><b>SIGNIN</b></button>{'  '}
-        
-
-      </div>
+     
       <div id="d4">
       <button id="PersonalDetails"><h3>PERSONAL DETAILS</h3></button>
         <button id="TravelDetail"><h3>TRAVEL DETAILS</h3></button>
@@ -169,13 +185,13 @@ function App() {
                         Train
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                        <Dropdown.Item href="/Train">
+                        <Dropdown.Item onClick={(e)=>{e.preventDefault();history.push('/Train')}}>
                             Train
                         </Dropdown.Item>
-                        <Dropdown.Item href="/Flight">
+                        <Dropdown.Item onClick={(e)=>{e.preventDefault();history.push('/Flight')}}>
                             Flight
                         </Dropdown.Item>
-                        <Dropdown.Item href="/Bus">
+                        <Dropdown.Item onClick={(e)=>{e.preventDefault();history.push('/Bus')}}>
                             Bus
                         </Dropdown.Item>
                         </Dropdown.Menu>
@@ -212,7 +228,7 @@ function App() {
                                 <label for="transport"><i><h3>Select Boarding State:</h3></i></label><br></br>
                                 <select id="state" onChange={e=>setState(e.target.value)} required >
                                             <option value="0"><b>Select Boarding state</b></option>
-                                             <option value="Maharastra"><b>Maharastra</b></option>
+                                             <option value="Maharashtra"><b>Maharastra</b></option>
                                             <option value="Delhi"><b>Delhi</b></option>
                                             <option value="Punjab"><b>Punjab</b></option>
                                             <option value="Rajasthan"><b>Rajasthan</b></option>
@@ -316,8 +332,6 @@ function App() {
             <img src='../images/train.gif' alt="profile" className="profile"/>
             </div>
         </div>
-      
-
     </div>
 
    

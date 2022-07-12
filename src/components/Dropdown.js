@@ -1,10 +1,11 @@
 import React, {Component} from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import Dropdown1 from 'react-bootstrap/Dropdown';
+import { useHistory } from "react-router-dom";
+import { ArrowDropDownRounded } from "@material-ui/icons";
 
-
-export default class Dropdown extends Component{
-  render() {
+const Dropdown=()=>{
+const history=useHistory();  
     return (
         <div style={{ display: 'block', 
                   width: 120, 
@@ -14,7 +15,7 @@ export default class Dropdown extends Component{
           Manage Account <i class="fa-solid fa-user-gear"></i>
         </Dropdown1.Toggle>
         <Dropdown1.Menu>
-          <Dropdown1.Item href="#">
+          <Dropdown1.Item onClick={(e)=>{e.preventDefault();history.push('/products')}}>
             Manage Account
           </Dropdown1.Item>
           <Dropdown1.Item href="#">
@@ -27,5 +28,6 @@ export default class Dropdown extends Component{
       </Dropdown1>
     </div>
   )
-  }
 }
+
+export default Dropdown;

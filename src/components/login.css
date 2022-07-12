@@ -117,3 +117,43 @@
     flex-direction: column;
   }
 }
+
+   /* Responsive layout - makes a one column layout instead of a two-column layout */
+   @media (max-width: 800px) {
+    .profile_login {
+      height: 100px;
+      width: 100px;
+      border-radius: 80px;
+    }
+  }
+
+     /* Responsive layout - makes a one column layout instead of a two-column layout */
+     @media (max-width: 800px) {
+      .sub-main {
+        width: 90%;
+        margin-left: 60px;
+        height: 450px;
+      }
+      #j1{
+        margin-top: 20px;
+      }
+      .main input{
+        width: 180px;
+
+      }
+      #bubble{
+        width: 130px;
+      }
+      .main{
+        padding-top: 40px;
+      }
+      .link{
+        font-size: 20px;
+      }
+      .login-button{
+        padding-top: 20px;
+      }
+      .main #login{
+        display: none;
+      }
+    }

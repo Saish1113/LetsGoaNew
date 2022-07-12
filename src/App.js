@@ -24,6 +24,7 @@ import 'react-toastify/dist/ReactToastify.css';
 //import testform from './components/testform.js'rt
 import Form from './components/ptemp'
 import Axios from 'axios'
+import Activity_cards from "./components/Activity_Cards"
 //import {BrowserRouter as Router,Routes,Route} from 'react-router-dom';
 import Flight from "./components/Flight"
 import Hotels from "./components/Hotels"
@@ -31,8 +32,6 @@ import Cards from "./components/Cards"
 import Bus from "./components/Bus"
 import Train from "./components/Train"
 import Hotels1 from "./components/Hotels1"
-import Footer from './components/Footer'
-import Activity from './components/Activity_Cards'
 import NewReg from './components/temp2'
 import ErrorPage from '../src/components/pages/Error_404'
 import Logout from './components/Logout'
@@ -54,6 +53,7 @@ class App extends Component {
   
   loginHandler =() => {
     this.setState({auth: !this.state.auth});
+    localStorage.setItem('status',this.state.auth);
   }
 
 
@@ -92,7 +92,7 @@ class App extends Component {
       <Route path='/Train' component={Train}/>
       <Route path='/Bus' component={Bus}/>
       <Route path='/Hotels1' component={Hotels1}/>
-      <Route path='/Activity_cards' component={Activity}/>
+      <Route path='/Activity_cards' component={Activity_cards}/>
       <Route path='/Error' component={ErrorPage}/>
       <Route path='/logout' component={Logout}/>
       <Route path='/About-us' component={About_us}/>

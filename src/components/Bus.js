@@ -3,10 +3,9 @@ import  React, {Component} from 'react'
 import {TextField} from "@material-ui/core"
 import {Button} from 'react-bootstrap';
 //import Travel from './Travel';
-import profile2 from "./images/day_bus.gif";
 import './Travel.css';
 import  { useState,useEffect } from 'react';
-import{useNavigate} from 'react-router-dom';
+import{useHistory} from 'react-router-dom';
 import Dropdown from 'react-bootstrap/Dropdown';
 
 import Axios from "axios";
@@ -15,7 +14,17 @@ import Axios from "axios";
 
 function App() {
 
+    useEffect(() => {
+        console.log("I reached bro");
+        Axios.get("http://localhost:3001/temp").then((response) => {
+        console.log(response.data[0].username);
+        console.log("inside temp");
+        setUserName(response.data[0].username);
+    
+    });
+}, []);
 
+    const [User,setUserName]=useState('');
     const [Date1, setDate]=useState('');
     const [State, setState]=useState('');
     
@@ -28,7 +37,7 @@ function App() {
     
 
     const [serrmsg,setAErrmsg]=useState('');
-    const navigate=useNavigate();
+    const history=useHistory();
 
     const [loginStatus, setLoginStatus] = useState("");
 
@@ -68,7 +77,7 @@ else if(Traveller<Children){
 else{
 
     setAErrmsg("");
-    navigate('/Hotels');
+    history.push('/Hotels');
 
     register();
 
@@ -77,6 +86,7 @@ else{
 }
 
 const register = () => {
+    try{
     Axios.post("http://localhost:3001/Bus", {
       Date1:Date1,
       State:State,
@@ -85,6 +95,7 @@ const register = () => {
       Traveller:Traveller,
       Adult:Adult,
       Children:Children,
+      User:User,
      
       //password: passwordReg,
     }).then((response) => {
@@ -92,36 +103,24 @@ const register = () => {
       setLoginStatus({message: "Personal Details is successfull"});
       console.log(loginStatus);
     });
+}catch(error){
+    console.log(error);
+}
+    updateActivityTable();
   };
 
-
-    const handleSubmition1=(e)=>{
-        e.preventDefault();
-      
+const updateActivityTable=()=>{
+    Axios.post("http://localhost:3001/activity_table", {
+        User:User,
+        Mode:"Bus",
        
-        navigate('/Flight');
-    
-
-    }
-
-    const handleSubmition3=(e)=>{
-        e.preventDefault();
-      
-       
-       
-        navigate('/Train');
-    
-
-    }
-
-    const handleSubmition2=(e)=>{
-        e.preventDefault();
-      
-       
-        navigate('/Bus');
-    
-
-    }
+        //password: passwordReg,
+      }).then((response) => {
+        console.log(response);
+        //setLoginStatus({message: "Personal Details is successfull"});
+        //console.log(loginStatus);
+      });
+}
 
 
 
@@ -153,18 +152,6 @@ const register = () => {
     
     
     <div className="UserDetails1">
-      <i><b><h1> Goa Tour</h1></b></i>
-      <div id="d0">
-        
-       
-      
-        <button id="home"><b>HOME</b></button>{'  '}
-        <button id="gallery"><b>GALLERY</b></button>{'  '}
-        <button id="about us"><b>ABOUT US</b></button>{'  '}
-        <button id="signin"><b>SIGNIN</b></button>{'  '}
-        
-
-      </div>
       <div id="d4">
       <button id="PersonalDetails"><h3>PERSONAL DETAILS</h3></button>
         <button id="TravelDetail"><h3>TRAVEL DETAILS</h3></button>
@@ -193,13 +180,13 @@ const register = () => {
                         Bus
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                        <Dropdown.Item href="/Bus">
+                        <Dropdown.Item onClick={(e)=>{e.preventDefault();history.push('/Bus')}}>
                             Bus
                         </Dropdown.Item>
-                        <Dropdown.Item href="/Flight">
+                        <Dropdown.Item onClick={(e)=>{e.preventDefault();history.push('/Flight')}}>
                             Flight
                         </Dropdown.Item>
-                        <Dropdown.Item href="/Train">
+                        <Dropdown.Item onClick={(e)=>{e.preventDefault();history.push('/Train')}}>
                             Train
                         </Dropdown.Item>
                         </Dropdown.Menu>
@@ -234,7 +221,7 @@ const register = () => {
                                 <label for="transport"><i><h3>Select Boarding State:</h3></i></label><br></br>
                                 <select id="state"onChange={e=>setState(e.target.value)} required >
                                             <option value="0"><b>Select Boarding state</b></option>
-                                             <option value="Maharastra"><b>Maharastra</b></option>
+                                             <option value="Maharashtra"><b>Maharastra</b></option>
                                             <option value="Delhi"><b>Delhi</b></option>
                                             <option value="Panjab"><b>Punjab</b></option>
                                             <option value="Rajasthan"><b>Rajasthan</b></option>
@@ -311,11 +298,10 @@ const register = () => {
 
       
             <div class="col-lg">
-            <img src={profile2} alt="profile" className="profile"/>
+            <img src="../images/day_bus.gif" alt="profile" className="profile"/>
             </div>
         </div>
-      
-
+st
     </div>
 
    

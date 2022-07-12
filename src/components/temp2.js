@@ -6,15 +6,22 @@ import { useFormik } from "formik";
 import { Col, Container, Row} from "react-bootstrap";
 import Axios from 'axios'
 import { useHistory } from "react-router-dom";
-
+import {
+  toast,
+  ToastContainer
+} from 'react-toastify'
 
 const App = () => {
 
   const history=useHistory();
 
+    function handleSuccess(){
+      toast.success("New User added Successfully");
+      history.push("/sign-up");
+    }
 
     const register_new = (fullname,username,email,password,phone,gender) => {
-  
+      console.log("Inside Register")
         Axios.post("http://localhost:3001/register", {
           fullname: fullname,
           username:username,
@@ -22,10 +29,11 @@ const App = () => {
           phone: phone,
           email: email,
           gender: gender,
-        }).then((response) => {
-          console.log(response.data);
-          history.push('/sign-up');
+        }).then(function(response) {
+          
+          //handleSuccess()
         });
+        handleSuccess();
       };
     
       useEffect(() => {
@@ -68,7 +76,7 @@ const App = () => {
         // validateOnChange: false,
         // validateOnBlur: false,
         onSubmit: (data) => {
-          console.log(JSON.stringify(data, null, 2));
+          //console.log(JSON.stringify(data, null, 2));
           const dname=data.fullname;
           const uname=data.username;
           const email=data.email;
@@ -80,9 +88,12 @@ const App = () => {
       });
 
   return (
-    <Container className="mt-5" id="reg">
+    <Container className="mt-5" id="reg" background-color="black">
     <Row>
-    <div className="register-form">
+    <div className="register-form"   style={{
+        backgroundColor: 'cyan',
+        font:"40px",
+      }}>
     <Col lg={4} md={6} sm={12} className="mt-5 p-3">
       <form onSubmit={formik.handleSubmit}>
         <div className="form-group">
@@ -194,7 +205,7 @@ const App = () => {
             {formik.errors.acceptTerms ? formik.errors.acceptTerms : null}
           </div>
         </div>
-        <div className="form-group">
+        <div className="form-group" align="center" margin-top="30px">
           <button type="submit" className="btn btn-primary">
             Register
           </button>
@@ -209,7 +220,11 @@ const App = () => {
       </form>
     </Col>
     <Col lg={8} md={6} sm={12}>
-                        <img className="w-100" height="650px" src={'../images/sign-up.jpeg'} alt=""/>
+      <div style={{
+        padding: '10px',
+      }}>
+                        <img className="w-100" height="650px" src={'../images/sign-up.jpeg'} alt="image"/>
+    </div>
     </Col>
 
     </div>

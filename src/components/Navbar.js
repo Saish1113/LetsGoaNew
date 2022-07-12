@@ -36,6 +36,8 @@ function Navbar(props){
     showButton();
   }, []);
 
+  const s=localStorage.getItem('status')
+
 
   window.addEventListener('resize', showButton);
 

@@ -1,10 +1,9 @@
-import logo from './logo.svg';
 //import './personalDetails.css';
 import  React, {Component} from 'react'
 import {TextField} from "@material-ui/core"
 import {Button} from 'react-bootstrap';
 //import Travel from './Travel';
-import profile2 from "./images/hotels.gif";
+//import profile2 from "./images/hotels.gif";
 
 import './hotel.css'
 import  { useState,useEffect } from 'react';
@@ -18,6 +17,15 @@ import Axios from "axios";
 
 function App() {
 
+    useEffect(() => {
+        console.log("I reached bro");
+        Axios.get("http://localhost:3001/temp").then((response) => {
+        console.log(response.data[0].username);
+        console.log("inside temp");
+        setUserName(response.data[0].username);
+    
+    });
+}, []);
     
     const [City, setCity]=useState('');
     const [Hotels, setHotels]=useState('');
@@ -27,6 +35,7 @@ function App() {
     const [Lunch, setLunch]=useState('');
     const [Breakfast, setBreak]=useState('');
     const [Dinner, setDinner]=useState('');
+    const [User,setUserName]=useState('');
 
 
     const [serrmsg,setAErrmsg]=useState('');
@@ -58,8 +67,7 @@ function App() {
 
         else{
 
-            setAErrmsg("");
-            history.push('/Cards');
+            history.push('/Activity_cards');
     
             register();
 
@@ -78,6 +86,7 @@ function App() {
             Lunch:Lunch,
             Breakfast:Breakfast,
             Dinner:Dinner,
+            User:User,
 
         
         
@@ -98,18 +107,7 @@ function App() {
     
     
     <div className="UserDetails2">
-      <i><b><h1> Goa Tour</h1></b></i>
-      <div id="d0">
-        
-       
-      
-        <button id="home"><b>HOME</b></button>{'  '}
-        <button id="gallery"><b>GALLERY</b></button>{'  '}
-        <button id="about us"><b>ABOUT US</b></button>{'  '}
-        <button id="signin"><b>SIGNIN</b></button>{'  '}
-        
-
-      </div>
+    
       <div id="d4">
       <button id="PersonalDetails"><h3>PERSONAL DETAILS</h3></button>
         <button id="TravelDetails"><h3>TRAVEL DETAILS</h3></button>
@@ -149,20 +147,21 @@ function App() {
                     
                     <Dropdown>
                         <Dropdown.Toggle style={{  backgroundColor: "white", 
-                                color:"black",
+                                color:"Black",
                                 width:465,
                                 height:30,
                                 
                                 
                                 
-                                }}  >
+                                }} 
+                                   >
                         Panjim
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                        <Dropdown.Item  value="Panjim" onChange={e=>setCity(e.target.value)} id="01" href="/Hotels">
+                        <Dropdown.Item onClick={(e)=>{e.preventDefault();history.push('/Hotels')}} >
                             Margao
                         </Dropdown.Item>
-                        <Dropdown.Item id="02" href="/Hotels1">
+                        <Dropdown.Item onClick={(e)=>{e.preventDefault();history.push('/Hotels1')}}>
                             Panjim
                         </Dropdown.Item>
                         
@@ -275,7 +274,7 @@ function App() {
 
       
             <div class="col-lg">
-            <img src={profile2} alt="profile" className="profile"/>
+            <img src="../images/hotels.gif" alt="profile" className="profile"/>
             </div>
         </div>
       
