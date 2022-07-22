@@ -8,6 +8,20 @@ import { Redirect } from 'react-router-dom';
 import Dropdown from './Dropdown.js'
 import Axios from 'axios'
 
+import DarkTheme, { createTheme } from 'react-dark-theme'
+
+const lightTheme = {
+  background: 'white',
+  text: 'black',
+}
+ 
+const darkTheme = {
+  background: 'black',
+  text: 'white',
+}
+ 
+const myTheme = createTheme(darkTheme, lightTheme)
+
 function Navbar(props){
 
   useEffect(() => {
@@ -46,11 +60,15 @@ function Navbar(props){
   return (
     <>
       <nav className='my-navbar'>
+
         <div className='my-navbar-container'>
+          &nbsp;&nbsp;&nbsp;
+          <DarkTheme light={lightTheme} dark={darkTheme} />
           <Link to='/' className='my-navbar-logo' onClick={closeMobileMenu}>
-            TRVL
+            LET'S GOA  
             <i className='fab fa-typo3' />
           </Link>
+          
           <div className='my-menu-icon' onClick={handleClick}>
             <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
           </div>
@@ -89,8 +107,8 @@ function Navbar(props){
             </li>
 
             <li>
-            {props.status &&
-                       <Link
+            {props.status && //<Dropdown/>
+                        <Link
                           to='/logout'
                           className='my-nav-links-mobile'
                           onClick={closeMobileMenu}

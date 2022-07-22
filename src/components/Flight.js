@@ -52,12 +52,57 @@ function App() {
     const [loginStatus, setLoginStatus] = useState("");
 
 
-
     const handleSubmition=(e)=>{
         e.preventDefault();
+
+        const t=Number(Adult)+Number(Children);
       
-        if(!Date || !State || !Boarding || !Destination || !Traveller || !Children || !Adult || !FlightClass || !Airlines ){
-          alert("please fill All the field");
+        
+        console.log("t is :" + t);
+        
+        if(!Date)
+        {
+            alert("please Enter the Date "); 
+        }
+
+        else if(!State)
+        {
+            alert("please Enter the Bording State  "); 
+        }
+
+        else if(!Boarding)
+        {
+            alert("please Enter the Bording Airport  "); 
+        }
+
+        else if(!Destination)
+        {
+            alert("please Enter the Destination"); 
+        }
+
+        else if(!Traveller)
+        {
+            alert("please Enter the no of travelers "); 
+        }
+
+        else if(!Children)
+        {
+            alert("please Enter no of childern "); 
+        }
+
+        else if(!Adult)
+        {
+            alert("please Enter no of Adults "); 
+        }
+
+        else if(!FlightClass)
+        {
+            alert("please Enter no of Flight Class "); 
+        }
+
+        else if(!Airlines)
+        {
+            alert("please Enter no of Airlines "); 
         }
 
         else if(Date<"2022-06-20"){
@@ -70,18 +115,21 @@ function App() {
         else if(Adult<0||Adult==0){
             alert("invalid no of Adults ") ;   
         }
-        
-        else if(Traveller<Adult){
-        alert("Adults should be less than or equal to Travellers  ") ;   
+
+        else if(Traveller>t){
+            console.log("Adult " + Adult + "Children is : " + Children + "Traveller : " +Traveller);
+        alert("Please enter valid number of total travellers") ;   
+        }
+
+        else if(Traveller<t){
+            console.log("Adult2 " + Adult + "Children is : " + Children);
+        alert("Please enter valid number of total travellers") ;   
         }
         
-        else if(Children<0||Children==0){
+        else if(Children<0){
             alert("invalid no of Childerns");   
         }
         
-        else if(Traveller<Children){
-            alert("childrens should be less than or equal to Travellers  ") ;   
-            }
 
         else{
 

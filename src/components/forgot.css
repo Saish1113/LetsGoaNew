@@ -1,0 +1,229 @@
+.main12 {
+    text-align: center;
+    justify-content: center;
+    display: flex; 
+    flex-direction: row;
+    padding-top: 90px;
+    padding-bottom: 90px;
+    background-color: #e1e3eb;
+    height: 1400px;
+    /* padding-right: 100px; */
+    
+  }
+  .sub-main12 {
+    /* margin-left: 30%; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 750px;
+    width: 60%;
+    box-shadow: 11px 12px 13px 12px rgb(207, 207, 207);
+    padding-top: 30px;
+    border-radius: 60px; 
+    background-color: white;
+    float: left;
+  }
+
+  .imgs12 {
+      padding-top: 20px;
+      justify-content: center;
+      display: flex;
+    }
+    
+  .container-image12 {
+    background-color: rgb(223, 221, 221); 
+    border-radius: 150px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    height: 115px;
+    width: 115px;
+  }
+  
+  
+  .profile_login12 {
+    height: 100px;
+    width: 100px;
+    border-radius: 130px;
+  }
+  
+
+  .main12 input{
+      width: 60%;
+      height: 60px;
+      border-radius: 60px;
+      box-shadow: inset 0px 0px 25px 0px #888;
+      border: none;
+      outline: none;
+      background-color: #fff;
+      font-size: x-large;
+  }
+
+  .email12{
+      height: 25px;
+      width: 25px;
+      position: absolute;
+      padding: 14px 0 0 25px;
+  }
+
+  .name12{
+      font-size: 15px;
+  }
+  .second-input12{
+      padding-top: 15px;
+      /* width:400px; */
+  }
+  .second-input23{
+    padding-top: 15px;
+    /* width:400px; */
+}
+  #bubble12{
+      width: 60%;
+      height: 60px;
+      border-radius: 60px;
+      background-color: #b103fc;
+      color: white;
+      font-size: 25px;
+      border: none;
+  }
+  .login-button12{
+      padding-top: 25px;
+  }
+
+  .link12{
+      font-size: 25px;
+      font-weight: 400;
+  }
+  
+
+   #j112{
+    margin-top: 50px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+   }
+
+   .main12 #login12{
+    margin-left: 50px;
+    display: flex;
+    clear: both;
+   }
+
+   /* Responsive layout - makes a one column layout instead of a two-column layout */
+/* @media (max-width: 800px) {
+  .main1 {
+    flex-direction: column;
+  }
+} */
+
+   /* Responsive layout - makes a one column layout instead of a two-column layout */
+@media (max-width: 480px) {
+
+    .main12 {
+        text-align: center;
+        justify-content: center;
+        display: flex; 
+        flex-direction: row;
+        padding-top: 20px;
+        padding-bottom: 90px;
+        background-color: #e1e3eb;
+        /* padding-right: 100px; */
+        
+      }
+
+  .sub-main12 {
+
+    /* margin-left: 30%; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* height: 550px; */
+    width: 100%;
+    box-shadow: 11px 12px 13px 12px rgb(207, 207, 207);
+    /* padding-top: 20px; */
+    border-radius: 60px; 
+    background-color: white;
+    float: left;
+    /* flex-direction: column; */
+  }
+
+  .main12 input{
+    width: 100%;
+    height: 60px;
+    border-radius: 60px;
+    box-shadow: inset 0px 0px 25px 0px #888;
+    border: none;
+    outline: none;
+    background-color: #fff;
+    font-size: x-large;
+}
+
+.imgs12 {
+    padding-top: 20px;
+    
+    justify-content: center;
+    display: flex;
+  }
+
+#bubble12{
+    width: 100%;
+    height: 60px;
+    border-radius: 60px;
+    background-color: #b103fc;
+    color: white;
+    font-size: 25px;
+    border: none;
+}
+}
+
+
+  @media (max-width: 780px) {
+
+    .main12 {
+        text-align: center;
+        justify-content: center;
+        display: flex; 
+        flex-direction: row;
+        padding-top: 20px;
+        padding-bottom: 90px;
+        background-color: #e1e3eb;
+        /* padding-right: 100px; */
+        
+      }
+
+  .sub-main12 {
+
+    /* margin-left: 30%; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* height: 550px; */
+    width: 80%;
+    box-shadow: 11px 12px 13px 12px rgb(207, 207, 207);
+    /* padding-top: 20px; */
+    border-radius: 60px; 
+    background-color: white;
+    float: left;
+    /* flex-direction: column; */
+  }
+  .main12 input{
+    width: 60%;
+    height: 60px;
+    border-radius: 60px;
+    box-shadow: inset 0px 0px 25px 0px #888;
+    border: none;
+    outline: none;
+    background-color: #fff;
+    font-size: x-large;
+}
+
+#bubble12{
+    width: 60%;
+    height: 60px;
+    border-radius: 60px;
+    background-color: #b103fc;
+    color: white;
+    font-size: 25px;
+    border: none;
+}
+}

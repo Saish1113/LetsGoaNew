@@ -31,13 +31,13 @@ if (defaultDark) {
 }
 
 // 5
-const toggleTheme: ChangeEventHandler<HTMLInputElement> = (e) => {
-  if (e.target.checked) {
-    setDark();
-  } else {
-    setLight();
-  }
-};
+// const toggleTheme: ChangeEventHandler<HTMLInputElement> = (e) => {
+//   if (e.target.checked) {
+//     setDark();
+//   } else {
+//     setLight();
+//   }
+// };
 
 const DarkMode = () => {
   return (

@@ -1,25 +1,46 @@
 import React,{useEffect,useState} from "react";
 import Axios from 'axios'
-import { useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import moment from 'moment'
 import Moment from 'react-moment'
 import 'moment-timezone'
 import Recordw from './display_record'
+import './display.css'
+import {PaymentElement} from '@stripe/react-stripe-js';
+import {Elements} from '@stripe/react-stripe-js';
+import {loadStripe} from '@stripe/stripe-js';
+import CheckoutForm from "./Checkout";
+import StripeCheckout from 'react-stripe-checkout'
+import { toast } from "react-toastify";
+import Success from './SuccessMessage';
+import { useHistory } from "react-router-dom";
+ 
+ const current = new Date();
+ const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
+
+
+const stripePromise = loadStripe('pk_test_51LLtUVSIEGave4jgJ8Bjr8DuujKlGxodtrMpYZxLRyC7qJtEpdl8ctp3Vfm5AVAXyDxqVsV6dcV4ckUyuaaRcuQH00DGyFrKx8');
+
 
 var start_time=0;
 var Arrival_Time=0;
 var b=0;
 var datenew=0,day=0;
-var j=0;
+//var j=0;
 var location="";
 var travel_time=0;
-var counter=1;
+var counter=0;
+var lastCurrtime='';
+var lastActivityTime='';
+var end_date="";
+var tk="";
 
 
 window.counter = 1;
 
 function Activity_view(){
+
+ 
   const [Name, setName]=useState('');
   const [Hotel,setHotel]=useState([]);
   const [Temp,settemp]=useState([]);
@@ -31,7 +52,18 @@ function Activity_view(){
   const [checkin_time,getcheckin_time]=useState('');
   const [time,set_time]=useState('');
   const [timingsn,settimings]=useState([]);
+  const [j,setStarttime]=useState();
+  const [total,SetTotal]=useState();
+
+  const [records, setRecords] = useState([]);
   //const [counter, setCounter] = useState(0);
+
+  const history=useHistory();
+
+
+  const current = new Date();
+  //const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
+  const curr_date=`${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}`
 
   //get username
   useEffect(() => {
@@ -54,7 +86,7 @@ function Activity_view(){
       //console.log(response);
       var Activities=response.data;
       Setactivities(Activities[0].activities);
-      //console.log(Activities[0].activities);
+      console.log("Activities aa : " , Activities[0].activities);
     });
 }, [Name]);
 
@@ -66,8 +98,9 @@ useEffect(() => {
     username:Name,
   }).then((response) => {
     //console.log("inside hotel details")
-    //console.log(response.data[0]);
+    console.log("Hotellll :" , response.data[0]);
     setHotel(response.data[0]);
+
   });
 }, [Name]);
 
@@ -75,7 +108,7 @@ useEffect(() => {
 useEffect(() => {
   if (Name === '') return;
   console.log("Inside transport");
-  Axios.post("http://localhost:3001/get_transport_details", {
+  Axios.post("http://localhost:3001:3001/get_transport_details", {
     username:Name,
   }).then((response) => {
     console.log("inside transport details")
@@ -128,13 +161,15 @@ useEffect(() => {
     username:Name,
   }).then((response) => {
     //console.log("inside travel details")
-    //console.log("mode is " , response.data[0].Mode);
+    console.log("mode is " , response.data[0].Mode);
     SetMode(response.data[0].Mode);
+    console.log("OOOOO " , Mode);
     if(response.data[0].Mode==="Flight"){
       Axios.post("http://localhost:3001/get_flight", {
         username:Name,
       }).then((response) => {
-        //console.log(response.data[0]);
+        console.log("QQQQQ   : " , response.data[0]);
+
         setModeDetails(response.data[0]);
         var airline=response.data[0].Airlines;
         var FlightClass=response.data[0].FlightClass;
@@ -156,7 +191,7 @@ useEffect(() => {
       Axios.post("http://localhost:3001/get_bus", {
         username:Name,
       }).then((response) => {
-        //console.log(response);
+        console.log("BBBBBB : " ,response);
         setModeDetails(response.data[0]);
         var date=response.data[0].Date1;
         //var temp=moment.utc('2019-11-03T05:00:00.000Z').format('MM/DD/YYYY');
@@ -172,7 +207,7 @@ useEffect(() => {
         }); 
       }); 
     }
-    else{
+    else if(response.data[0].Mode==="Train"){
       Axios.post("http://localhost:3001/get_train", {
         username:Name,
       }).then((response) => {
@@ -181,13 +216,15 @@ useEffect(() => {
         var date=response.data[0].Date;
         var State=response.data[0].State;
         var tclass=response.data[0].Class;
+        var dest=response.data[0].Destination;
         Axios.post("http://localhost:3001/get_train_details", {
         date:date,
         state:State,
         tclass:tclass,
+        dest:dest,
       }).then((response) => {
-        //console.log(response.data[0]);
-        //getModeDetails(response.data[0]);
+        console.log("TTTTTTT   :" , response);
+        getModeDetails(response.data[0]);
         }); 
       }); 
     }
@@ -197,7 +234,7 @@ useEffect(() => {
  // console.log("outside");
 
  useEffect(()=>{
-  var i=0;
+  /*var i=0;
   var city=Hotel.Hotel_City;
   var timings=[];
   
@@ -207,7 +244,7 @@ useEffect(() => {
     console.log("Places are : " ,places);
   for(i=0;i<=Temp.length;i++){
     var act=ActivityNames[i];
-    Axios.post("http://localhost:3001/get_travel_time", {
+    Axios.post("http://localhost:3001:3001/get_travel_time", {
       act:act,
       place:city,
     }).then((response) => {
@@ -227,13 +264,13 @@ useEffect(() => {
   }
   console.log("Timings array is  : " , timings);
   settimings(timings);
-  console.log("Timings state : " , timingsn);
+  console.log("Timings state : " , timingsn);*/
  },[Temp,Hotel])
 
  //useEffect(()=>{
   //var dst=ModeDetails.Destination;
   //console.log("new temp " , Temp);
-  // Axios.post("http://localhost:3001/get_destination", {
+  // Axios.post("http://localhost:3001:3001/get_destination", {
   //       dst:dst,
   //       hotel:hotel,
   //     }).then((response) => {
@@ -257,6 +294,8 @@ useEffect(() => {
 
 
  useEffect(()=>{
+  if (ModeDetails === '') return;
+  if (Hotel === '') return;
   var dst=ModeDetails.Destination;
   const hotel=Hotel.Hotel_Name;
   Axios.post("http://localhost:3001/get_destination", {
@@ -273,6 +312,7 @@ useEffect(() => {
             //console.log(key); // 'a'
             //console.log(temp[key]); // 'hello'
             getcheckin_time(temp[key])
+            //time=temp[key];
           }
         }   
         console.log("checkin_time is "+checkin_time);
@@ -284,6 +324,93 @@ useEffect(() => {
 
  
  useEffect(() => {
+  console.log("Temp timing:", Temp);
+
+  var city=Hotel.Hotel_City;
+  
+  let promises = Temp.map(e => {
+    const act = e.Activity_Name;
+    const cty = city;
+
+    city = e.Activity_City; //Update next city in activity chain
+    return Axios.post("http://localhost:3001/get_travel_time", {
+      act:act,
+      place:cty
+    });
+  });
+
+  Promise.all(promises)
+  .then(responses => responses.map(response => Object.entries(response.data[0]).flat()[1]))
+  .then(timings => {
+    let curr_time = moment(j,'YYYY-MM-DD H:mm:ss');
+    return timings.map((t, i, a) => {
+      const tDiff = moment.duration(t, "HH:mm:ss");
+      const act_time = i >=1 ? Temp[i-1].Activity_Time : 0;
+      curr_time = curr_time.add(tDiff).add(act_time, 'hours');
+      ///check curr_time > 18:00, curr_time = curr_time.add(12 'hours')
+      const hours=moment(curr_time,"HH:mm").format('HH');
+       console.log("Hours : " + hours);
+      if(hours>=18){
+           console.log("Inside if")
+           //var mtime=moment(curr_time,'HH:mm').subtract(tDiff).subtract(act_time,'hours');
+           var ntime=moment(curr_time,"HH:mm").add(12,'hours');
+           console.log("ntime : "+ntime);
+           curr_time=ntime;
+           //curr_time=moment(ntime).format('YYYY-MM-DD H:mm:ss A');
+          console.log("curr time after change : " + curr_time.format('YYYY-MM-DD H:mm:ss A'));
+          }
+      console.log("AAAA", act_time, curr_time.format('YYYY-MM-DD H:mm:ss A'));
+      lastCurrtime=curr_time;
+      return curr_time.format('YYYY-MM-DD H:mm:ss A');
+    });
+  })
+  .then(datetimes => datetimes.map((elem, i, a) => {
+    let curr_time = moment(elem, 'YYYY-MM-DD H:mm:ss A');
+    return {
+      ActDate: curr_time.format('YYYY-MM-DD H:mm:ss A'),
+      TravelTime: curr_time.format('H:mm A'),
+      ActDay: get_day(curr_time.day())
+    }}
+  ))
+  .then(acts_timing => {
+    setRecords(Temp.map((e,i,a) => {
+      lastActivityTime=e.Activity_Time;
+      return {
+        Activity_Name: e.Activity_Name,
+        Activity_City: e.Activity_City,
+        day: acts_timing[i].ActDay,
+        date: acts_timing[i].ActDate,
+        travel_time: acts_timing[i].TravelTime
+      };
+    }))
+  });
+
+
+    /*var act=ActivityNames[i];
+    Axios.post("http://localhost:3001:3001/get_travel_time", {
+      act:act,
+      place:city,
+    }).then((response) => {
+      console.log("new try output is " , response);
+      var jes=response.data[0];
+      for (var key in jes) {
+        if (jes.hasOwnProperty(key)) {
+          //console.log(key); // 'a'
+          console.log(jes[key]);
+          const p=jes[key];
+          console.log("p is  : " + p);
+          timings.push(p);
+        }
+      }
+    });
+    city=places[i];
+  }
+  console.log("Timings array is  : " , timings);
+  settimings(timings);
+  console.log("Timings state : " , timingsn);
+*/
+    
+
     var total=0;
     var i;
     for(i=0;i<Temp.length;i++){
@@ -293,10 +420,46 @@ useEffect(() => {
     //console.log(total);
     Setactivity_total(total);
 
-}, [Temp]);
+}, [Temp,j]);
+
+useEffect(()=>{
+  var arrival_date=Details.Arrival_Date;
+  var Arrival_Time=Details.Arrival_Time;
+ 
+  //console.log("Arrivaln Time new : " + Arrival_Time);
+
+  var temp_hours=moment(Arrival_Time,"HH:mm").format('hh');
+
+  //console.log("Arrivaln temp_hours : ", temp_hours);
+
+  var temp=moment.utc(arrival_date).format('YYYY-MM-DD');
+
+  const datenew=moment(temp).add(temp_hours,'hours').format('YYYY-MM-DD H:mm:ss A');
+
+  //console.log("Arrivaln datenew : " + datenew);
+
+  setStarttime(moment(datenew).add(checkin_time,'HH:mm:ss').format('YYYY-MM-DD H:mm:ss A'));
+
+},[Details,checkin_time]);
+
+useEffect(()=>{
+  let grand_total=0;
+  const a_total=Activity_total;
+  const t_traveller=ModeDetails.Traveller;
+  const t_price=Details.Price;
+  const t_total=(t_traveller*t_price);
+  const h_days=Hotel.Days;
+  const h_price=Hotel.Hotel_Price;
+  const h_total=(h_days*h_price);
+  grand_total=a_total+t_total+h_total
+  console.log("JJJJJ  " + grand_total +" " +  a_total + " " + t_total + " " + h_total );
+  SetTotal(grand_total);
+
+
+},[Activity_total,ModeDetails,Details,Hotel]);
 
 // useEffect(() => {
-//   Axios.post("http://localhost:3001/get_travel_time", {
+//   Axios.post("http://localhost:3001:3001/get_travel_time", {
 //     act:activity,
 //     place:pl,
 //   }).then((response) => {
@@ -355,21 +518,38 @@ const generate_iternary=()=>{
   const i=0;
   
   var arrival_date=Details.Arrival_Date;
-  Arrival_Time=Details.Arrival_Time;
+  const Arrival_Time2=Details.Arrival_Time;
+
+  console.log("Arrivaln Time 2 : " + Arrival_Time2);
   
   var Departure_Time=Details.Departure_Time;
-  var Departure_Date=Details.Departure_Date;
+   var Departure_Date=Details.Departure_Date;
 
-  var temp_hours=moment(Arrival_Time,"HH:mm").format('hh');
+   //console.log("NNNNNN : " + Departure_Date + " " , Details);
+
+  var temp_hours=moment(Arrival_Time2,"HH:mm").format('HH');
+
+console.log("Arrivaln_time 2: temp_hours  " + temp_hours);
+
   //console.log("arrival date : " + arrival_date);
   var temp=moment.utc(arrival_date).format('YYYY-MM-DD');
+
+  console.log("Arrivaln : temp : " + temp);
+
   var dpdate=moment.utc(Departure_Date).format('YYYY-MM-DD');
+
+  //console.log('QQQQ : ' + dpdate);
   var temp_hours2=moment(Departure_Time,"HH:mm").format('hh:mm');
+
+
   var datenew2=moment(dpdate).add(temp_hours2,'hh:mm').format('YYYY-MM-DD H:mm:ss A');
 
+  //console.log('BBBBB : ' + datenew2);
 
-  datenew=moment(temp).add(temp_hours,'hours').format('YYYY-MM-DD H:mm:ss A');
-  j=moment(datenew).add(checkin_time,'HH:mm:ss').format('YYYY-MM-DD H:mm:ss A');
+   const datenew=moment(temp).add(temp_hours,'hours').format('YYYY-MM-DD H:mm:ss A');
+
+   console.log("Arrivaln : datenew : "+datenew);
+  // j=moment(datenew).add(checkin_time,'HH:mm:ss').format('YYYY-MM-DD H:mm:ss A');
   //console.log("j is : " + j);
  
   const date = moment(temp); // Thursday Feb 2015
@@ -382,10 +562,14 @@ const day=get_day(a);
   const start_date = moment(temp);
   //console.log("start date : "+temp);
   //console.log("Day : " +temp.isoWeekday());
-  var atime=moment(Arrival_Time,"HH:mm").format('hh:mm A');
+
+  console.log("new Arrival_Time : " + Arrival_Time2);
+  var atime=moment(Arrival_Time2,"HH:mm").format('HH:mm A');
+
+  console.log("New atime : " + atime);
   start_time=moment(atime,"HH:mm").add(checkin_time,'hh:mm').format('HH:mm A');
   var dtime=moment(Departure_Time,"HH:mm").format('hh:mm A');
-  var temp_hours=moment(Arrival_Time,"HH:mm").format('hh');
+  var temp_hours=moment(Arrival_Time,"HH:mm").format('HH');
   //console.log("temp hours : "+temp_hours);
 
   var date_with_time=date.add(16,'hours').format('YYYY-MM-DD H:mm:ss A');
@@ -406,36 +590,60 @@ const day=get_day(a);
   b=0;
   location=Hotel.Hotel_City;
 
+  counter=0;
+  // console.log("Timing 1 : " ,timingsn[0]);
+  // console.log("Timing 2 : " ,timingsn[1]);
+  // console.log("Timing 3 : " ,timingsn[2]);
+  var timing1=timingsn[0];
+  console.log("timing1 : "+timing1);
+  var new_t=moment(timing1,'HH:mm:ss').format('HH:mm:ss');
+  console.log("new t is : " + new_t);
+  
+    travel_time=moment(start_time,"HH:mm").add(new_t,'HH:mm:ss').format('HH:mm A');
+    //console.log("Travel time 1 is : "+travel_time);
 
-console.log("Timing 1 : " ,timingsn[0]);
-console.log("Timing 2 : " ,timingsn[1]);
-console.log("Timing 3 : " ,timingsn[2]);
-var timing1=timingsn[0];
-console.log("timing1 : "+timing1);
-var new_t=moment(timing1,'HH:mm:ss').format('HH:mm:ss');
-console.log("new t is : " + new_t);
+    //console.log("last curr time : " + moment(lastCurrtime).format('HH:mm:ss A'));
+    console.log("last activity time : " + moment(lastActivityTime,'HH:mm:ss').format('HH:mm:ss'));
+    const lastCurrTime= moment(lastCurrtime).format('YYYY-MM-DD HH:mm:ss A');
+    console.log("Last current time : " + lastCurrTime);
 
-  travel_time=moment(start_time,"HH:mm").add(new_t,'HH:mm:ss').format('HH:mm A');
-  console.log("Travel time 1 is : "+travel_time);
+    const newCheckout=moment(lastCurrTime).add(checkin_time,'HH:mm:ss');
+    console.log("last checkout time : " + newCheckout);
+    end_date=newCheckout.format('YYYY-MM-DD HH:mm:ss A');
+    console.log("end_date : " + end_date);
+
+
+  var checkOut_time=moment(lastCurrtime,'HH:mm:ss A').add(moment(lastActivityTime,'HH:mm:ss').format('HH:mm:ss'));;
+  console.log("checkout time : " +checkOut_time.format('HH:mm:ss A'));
+
+  const z=moment(checkOut_time).day();
+  const new_day=get_day(z);
 
 return(
   <>
     <Recordw activity="Departure" day={day} place={Details.Departure_From+", "+Details.Departure_State} date={datenew2} time={dtime}/>
     <Recordw activity="Arrival" day={day} place={ModeDetails.Destination} date={datenew} time={atime}/>
-    <Recordw activity="Check in" day={day} place={Hotel.Hotel_Name+"," + Hotel.Hotel_City} date={j} time={start_time}/>
-    {Temp.length>0 && Temp.map(activity => 
+    <Recordw activity="Check in" day={day} place={Hotel.Hotel_Name+", " + Hotel.Hotel_City} date={j} time={start_time}/>
+    
+    {j && records.map(activity => 
       <Recordw 
         activity={activity.Activity_Name} 
-        day={day} 
+        day={activity.day} 
         place={activity.Activity_City} 
-        date={j} time={travel_time} 
-        {...changetime(activity.Activity_Time)} 
-        {...incrementCounter(counter)}
-        {...getday(j)} 
-        {...getdate(j,activity.Activity_Time)}
+        date={activity.date} time={activity.travel_time} 
+        //{...changetime(activity.Activity_Time)} 
+        //{...incrementCounter(counter)}
+        //{...getday(j)} 
+        //{...getdate(j,activity.Activity_Time)}
         // {...gettraveltime(activity.Activity_Name,location,activity.Activity_City)}
         
     />)}
+    <Recordw activity="Check Out" day={new_day} place={Hotel.Hotel_Name+", " + Hotel.Hotel_City} date={checkOut_time.format('YYYY-MM-DD HH:mm:ss A')} time={checkOut_time.format('HH:mm A')}/>
+
+      
+
+     
+  
   </>
 );
 
@@ -451,13 +659,20 @@ return(
 
 // }
 
-function incrementCounter(count){
+async function incrementCounter(count){
+  //var a=count;
   console.log("Inside incrementCounter function ");
   console.log("length is : "+timingsn.length);
   console.log("Count is  1 : " + count);
   console.log("Counter is : " + counter);
-  if(timingsn[counter]!=null && count<timingsn.length-1){
-  counter=count+1;}
+
+  if(checkin_time!=null && timingsn[counter]!=null && timingsn.length!=0 && count<timingsn.length-1){
+  console.log("counter changed from " +counter);
+  counter=count+1;
+  console.log("counter changed to " + counter);
+  }
+
+
   console.log("Count is 2 : " + count);
   console.log("Counter is : " + counter);
 }
@@ -522,7 +737,14 @@ function gethours(date1){
 
 }
 
-function changetime(Time,activity,pl,city){
+// const paymentIntent = await stripe.paymentIntents.create({
+//   amount: 1200, // Specify amount here
+//   currency: "usd",// Specify currency here
+//   customer: customer.id, // Specify customer id
+//   setup_future_usage: 'off_session', // Include this if you plan to charge card off session (where user is not involved like recurring payments)
+// });
+
+async function changetime(Time,activity,pl,city){
   //setCounter(counter+1);
   console.log("Value of counter brfore : " + counter);
   var wq=window.counter;
@@ -543,28 +765,6 @@ console.log("tr is : " + tr);
   console.log("After change new time 2 : " + new_time2);
   //var t_time=  gettraveltime(activity,pl,city);
   
-  // await Axios.post("http://localhost:3001/get_travel_time", {
-  //   act:activity,
-  //   place:pl,
-  // }).then((response) => {
-  //    const x=response.data[0];
-  //    console.log("x is  : ", x);
-  //   for (var key in x) {
-  //   if (x.hasOwnProperty(key)) {
-  //        console.log("hello" + x[key]);
-  //        c=x[key];
-  //      }
-  //    }   
-  //   });
-  
-  //  var m=moment(c,"H:mm").format('HH:mm');
-  //         console.log("m is : "+m);
-  //         console.log("Travel time 2 is : "+new_time);
-  //         travel_time=moment(new_time,"HH:mm").add(m,'hh:mm').format('HH:mm A');
-  //         console.log("Travel time 3 is : "+new_time);
-  
-  
-  
   //console.log("in changetime : " + t_time);
   var hours=moment(new_time2,"HH:mm").format('HH');
   if(hours>=20){
@@ -579,39 +779,58 @@ console.log("tr is : " + tr);
   console.log("after final change travel time : " +travel_time);
 }
 
+var product= {
+  name:"Tour Package",
+  price:total,
+  description : "Enjoy Your Tour"
+}
+
+async function addBooking(){
+  console.log("inside addbooking : " + Name + " " + curr_date + " " + " " + moment(end_date,'YYYY-MM-DD').format('YYYY-MM-YY') + " " + total);
+  await Axios.post("http://localhost:3001/addBooking", {
+        name: Name,
+        book_date:curr_date,
+        total:total,
+        t_id:tk,
+        //date:newDate(),
+        start_date:moment.utc(Details.Departure_Date).format('YYYY-MM-DD'),
+        end_date:moment.utc(end_date,'YYYY-MM-DD').format('YYYY-MM-DD'),
+        }).then((response) => {
+          console.log(response);
+          // setLoginStatus({message: "Personal Details is successfull"});
+          // console.log(loginStatus);
+        });
+      };
+
+async function handleToken(token, addresses) {
+  console.log("Token : " , token)
+  const response=await Axios.post("http://localhost:3001/checkout", {
+       token:token,
+       product:product,
+   })
+
+   tk=token.id;
+
+  console.log(response.status)
+
+  if (response.status === 200) {
+    await addBooking();
+    toast("Success! Check email for details", { type: "success" });
+    history.push('/success');
+  } else {
+    toast("Something went wrong", { type: "error" });
+  }
+}
+
   return (
   <>
-  <div>
-        {/* <h2>Activity List</h2>
-        
-        <table className="table">
-            <thead>
-                <tr>
-                    <th>Activity Id</th>
-                    <th>Activity Name</th>
-                    <th>Activity Duration</th>
-                    <th>Activity Category</th>
-                    <th>Activity price</th>
-               </tr>
-            </thead>
-            <tbody>
-                {Temp.map(activity => (
-                    <tr key={activity.Activity_ID}>
-                        <td>{activity.Activity_ID}</td>
-                        <td>{activity.Activity_Name}</td>
-                        <td>{activity.Activity_Time}</td>
-                        <td>{activity.Activity_Category}</td>
-                        <td>{activity.Price}</td>
-                    </tr>
-                ))}
-            </tbody>
-        </table>
-      <h3 align="left" >Total Activity Price:  {Activity_total}</h3>
-       </div>
-       <div>
-        <h2>Hotel Details</h2>
+      
+       <div className="my_table_container ">
+       <center>
+       <div className="Hotel_table overflow-auto">
+        <h2 className="Hotel_title">Hotel Details</h2>
        <table className="table">
-            <thead>
+            <thead className="Hotel_head">
                 <tr>
                     <th>Hotel ID</th>
                     <th>Hotel Name</th>
@@ -620,7 +839,7 @@ console.log("tr is : " + tr);
                     <th>No of Nights</th>
                </tr>
             </thead>
-            <tbody>
+            <tbody className="Hotel_body">
                         <td>{Hotel.Hotel_ID}</td>
                         <td>{Hotel.Hotel_Name}</td>
                         <td>{Hotel.Hotel_Price}</td>
@@ -629,15 +848,20 @@ console.log("tr is : " + tr);
             </tbody>
         </table>
     </div>
-    <div>
-        <h2>Travel Details</h2>
-        <div align="center"><h4>Mode Of Transport :{Mode}</h4></div>
-        <div>
-       
-        </div>
-        <div>
+    </center>
+    </div>
+    <br/><br/>
+
+    <div className="my_table_container ">
+    <center>
+    <div className="travel_table overflow-auto">
+        <h2 className="travel_title">Travel Details</h2>
+         <div align="center">
+          <h4>Mode Of Transport :{Mode}</h4>
+          </div>
         <table className="table">
-           <thead>
+       
+           <thead className="travel_head">
                 <tr>
                     <th>Date</th>
                     <th>Boarding Stop</th>
@@ -646,8 +870,8 @@ console.log("tr is : " + tr);
                     <th>From</th>
                </tr>
             </thead>
-            <tbody>
-                        <td>{ModeDetails.Date}</td>
+            <tbody className="travel_body">
+                        <td>{moment(Details.Departure_Date).format('YYYY-MM-DD')}</td>
                         <td>{ModeDetails.Boarding}</td>
                         <td>{ModeDetails.Destination}</td>
                         <td>{ModeDetails.Traveller}</td>
@@ -655,53 +879,75 @@ console.log("tr is : " + tr);
             </tbody>
         </table>
           {console.log("Details are : " , Details)}
-        </div>
 
-        <div>
-        <table className="table">
-           <thead>
+        <div className="overflow-auto">
+        <table className="table overflow-auto" >
+           <thead className="travel_head">
                 <tr>
                     <th>Name</th>
                     <th>Departure_Date</th>
                     <th>Departure_State</th>
-                    <th>DEparture_Time</th>
+                    <th>Departure_Time</th>
                     <th>Class</th>
                     <th>Price</th>
                     <th>Arrival Date</th>
                     <th>Arrival Time</th>
                </tr>
             </thead>
-            <tbody>
+            <tbody className="travel_body">
+              {console.log("hhhh : " , Details)}
                         <td>{Details.Name}</td>
-                        <td>{Details.Departure_Date}</td>
+                        <td>{moment.utc(Details.Departure_Date).format('YYYY-MM-DD')}</td>
                         <td>{Details.Departure_State}</td>
                         <td>{Details.Departure_Time}</td>
                         <td>{Details.Class}</td>
                         <td>{Details.Price}</td>
-                        <td>{Details.Arrival_Date}</td>
-                        <td>{Details.Arrival_Time}</td>
+                        <td>{moment.utc(Details.Arrival_Date).format('YYYY-MM-DD')}</td>
+                        <td>{moment(Details.Arrival_Time,'HH:mm:ss').format('HH:mm:ss A')}</td>
             </tbody>
         </table>
-        </div> */}
-        {/* <a onClick={generate_iternary()}>Click Me</a> */}
-        <div>
+        </div>
+        </div>
+        </center>
+    </div>
+
+    <div className="my_table_container">
+        <center>
+        <div className="iternary_table overflow-auto">
+        <p className="iternary_title">Iternary</p>
           <table className="table">
-            <thead>
+            <thead className="iternary_head" font-family= "Lato-Regular">
               <tr>
-                <th font="100px">Date</th>
+                <th>Date</th>
                 <th>Time</th>
                 <th>Day</th>
                 <th>Activity</th>
                 <th>Place</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="iternary_body">
             {generate_iternary()}
             </tbody>
           </table>
         </div>
-         </div>
+        <br/><br/>
+        <center>
+          <p className="iternary_title">Grand Total: <i class="fa-solid fa-indian-rupee-sign"></i> {total} </p>
+        <div className="form-group container">
+          <StripeCheckout
+          className="center"
+          stripeKey="pk_test_51LLtUVSIEGave4jgJ8Bjr8DuujKlGxodtrMpYZxLRyC7qJtEpdl8ctp3Vfm5AVAXyDxqVsV6dcV4ckUyuaaRcuQH00DGyFrKx8"
+          token={handleToken}
+          amount={total *100}
+          name={product.name}
+          billingAddress
+          shippingAddress
+          currency='INR'
+          />
+          </div>
+        </center>
+         </center>
+      </div>        
     </>)
-
 }
 export default Activity_view;

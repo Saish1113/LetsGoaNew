@@ -15,6 +15,10 @@ import Axios from "axios";
 
 import  { useState,useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+
+const current = new Date();
+  //const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
+  const curr_date=`${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}`
  
 
 function App() {
@@ -48,23 +52,52 @@ function App() {
     const [loginStatus, setLoginStatus] = useState("");
 
     const handleSubmition=(e)=>{
+
+        console.log("CURRR Date : " + curr_date + "Dob : " + Dob);
       
         e.preventDefault();
       
-        if(!name || !Address || !Age || !Dob || !Adhar || !Email || !Gender ){
+        if(!name){
 
-            alert("please fill all the field");
+            alert("please enter the name ");
         }
+
+        else if(!Address){
+
+            alert("please fill Address");
+        }
+
+        else if(!Age){
+
+            alert("please fill Age");
+        }
+
+        else if(!Dob){
+
+            alert("please fill Date of birth");
+        }
+
+        else if(!Adhar){
+
+            alert("please fill Adhar card number ");
+        }
+
+        else if(!Gender){
+
+            alert("please fill Gender ");
+        }
+
+
         else if(Age<0|| Age==0){
             alert("Invaid age entered");
         }
 
         else if(Adhar.length!=12)
         {
-            alert("enter proper adhar card no ");
+            alert("Please enter valid Aadhar card number ");
         }
 
-        else if(Dob>"2022-06-18")
+        else if(Dob>=curr_date)
         {
             alert("enter proper Date of Birth");
         }

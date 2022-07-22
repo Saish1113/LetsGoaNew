@@ -4,12 +4,33 @@ import { Button } from './Button';
 import { Button3 } from './Button3';
 import './HeroSection.css';
 import { Button2 } from './Button2';
+import Typewriter from "typewriter-effect";
 
 function HeroSection(props) {
   return (
     <div className='hero-container'>
-      <video src='/videos/video-1.mp4' autoPlay loop muted />
-      <h1>ADVENTURE AWAITS</h1>
+      <video src='/videos/Goa.mp4' autoPlay loop muted /> 
+
+      <div id = "header1">
+   <div id= "header2">
+
+    <Typewriter
+    options={{
+      autoStart: true,
+      loop: true,
+      delay: 40,
+      strings: [
+        "Welcome to GOA",
+        "Happiness is closer than you think!",
+        "Adventure awaits, go find it.","Dont be a tourist,be a traveler!",
+
+      ],
+    }}
+       />
+      </div>
+    </div>
+
+
       <p>What are you waiting for?</p>
       <div className='hero-btns'>
       {props.status &&

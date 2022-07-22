@@ -43,47 +43,47 @@ function App() {
 
 
     
-const handleSubmition=(e)=>{
-e.preventDefault();
-
-if(!Date1 || !State || !Stop  || !Destination || !Traveller || !Children || !Adult  ){
-    alert("please fill All the field");
-}
-
-else if(Date<"2022-06-20"){
-    alert("enter Proper Date  ") ;   
-}
-
-else if(Traveller<0||Traveller==0){
-    alert("invalid no of travelers ") ;   
-}
-
-else if(Adult<0||Adult==0){
-    alert("invalid no of Adults ") ;   
-}
-
-else if(Traveller<Adult){
-alert("Adults should be less than or equal to Travellers  ") ;   
-}
-
-else if(Children<0||Children==0){
-    alert("invalid no of Childerns");   
-}
-
-else if(Traveller<Children){
-    alert("childrens should be less than or equal to Travellers  ") ;   
-    }
-
-else{
-
-    setAErrmsg("");
-    history.push('/Hotels');
-
-    register();
-
-}
-
-}
+    const handleSubmition=(e)=>{
+        e.preventDefault();
+        
+        if(!Date1 || !State || !Stop  || !Destination || !Traveller || !Children || !Adult  ){
+            alert("please fill All the field");
+        }
+        
+        else if(Date<"2022-06-20"){
+            alert("enter Proper Date  ") ;   
+        }
+        
+        else if(Traveller<0||Traveller==0){
+            alert("invalid no of travelers ") ;   
+        }
+        
+        else if(Adult<0||Adult==0){
+            alert("invalid no of Adults ") ;   
+        }
+        
+        else if(Traveller<Adult){
+        alert("Adults should be less than or equal to Travellers  ") ;   
+        }
+        
+        else if(Children<0||Children==0){
+            alert("invalid no of Childerns");   
+        }
+        
+        else if(Traveller<Children){
+            alert("childrens should be less than or equal to Travellers  ") ;   
+            }
+        
+        else{
+        
+            setAErrmsg("");
+            history.push('/Hotels');
+        
+            register();
+        
+        }
+        
+        }
 
 const register = () => {
     try{

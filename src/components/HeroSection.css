@@ -6,6 +6,16 @@ video {
   z-index: -1;
 }
 
+.HeyDropdown .btn{
+  font-size:1.3rem;
+}
+
+#header1#header1{
+  font-size: 70px;
+  color:whitesmoke;
+}
+
+
 .hero-container {
   /*background: url('../../public/images/goa-services-bg.jpg') center center/cover no-repeat;*/ 
   height: 100vh;

@@ -50,9 +50,22 @@ function App() {
     const handleSubmition=(e)=>{
         e.preventDefault();
       
-        if( !Hotels || !Rooms || !Days || !Nights ){
-            alert("please fill All the field");
+        if(!Hotels ){
+            alert("please select the Hotel");
         }
+
+        if(!Rooms ){
+            alert("please enter the Rooms");
+        }
+
+        if(!Days ){
+            alert("please select the Days");
+        }
+
+        if(!Nights ){
+            alert("please select the Nights");
+        }
+
         else if(Rooms<0||Rooms==0){
             alert("invalid no of travelers ") ;   
         }
@@ -67,13 +80,12 @@ function App() {
 
         else{
 
+            setAErrmsg("");
             history.push('/Activity_cards');
     
             register();
 
         }
-    
-
     }
 
     const register = () => {

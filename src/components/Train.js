@@ -74,34 +74,62 @@ function App() {
                 
     const handleSubmition=(e)=>{
         e.preventDefault();
+
+        const t=Number(Adult)+Number(Children);
       
-        if(!Date || !State || !Boarding || !Destination || !Traveller || !Children || !Adult || !Class ){
-            alert("please fill All the field");
+        if(!Date ){
+            alert("please fill the date ");
         }
 
-        else if(Date<"2022-06-20"){
+        if( !State  ){
+            alert("please enter the state");
+        }
+
+        if( !Boarding  ){
+            alert("please enter boarding station");
+        }
+
+        if( !Destination  ){
+            alert("please enter Destination");
+        }
+
+        if( !Traveller  ){
+            alert("please enter total no of travellers ");
+        }
+
+        if( !Children ){
+            alert("please enter no of children");
+        }
+
+        if( !Adult ){
+            alert("please enter no of Adults");
+        }
+
+        if( !Class ){
+            alert("please select All the Train class");
+        }
+
+        else if(Date<"2022-07-20"){
             alert("enter Proper Date  ") ;   
         }
         
-        else if(Traveller<0||Traveller==0){
+        else if(Traveller<t){
             alert("invalid no of travelers ") ;   
         }
 
-        else if(Adult<0||Adult==0){
+        
+        else if(Traveller>t){
+            alert("invalid no of travelers ") ;   
+        }
+
+        else if(Adult<0){
             alert("invalid no of Adults ") ;   
         }
         
-        else if(Traveller<Adult){
-        alert("Adults should be less than or equal to Travellers  ") ;   
-        }
         
-        else if(Children<0||Children==0){
+        else if(Children<0){
             alert("invalid no of Childerns");   
         }
-        
-        else if(Traveller<Children){
-            alert("childrens should be less than or equal to Travellers  ") ;   
-            }
 
         else{
 
@@ -113,7 +141,6 @@ function App() {
         }
 
     }
-
     const register = () => {
         Axios.post("http://localhost:3001/Train", {
           Date:Date,

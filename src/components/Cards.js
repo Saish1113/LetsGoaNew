@@ -5,41 +5,41 @@ import CardItem from './CardItem';
 function Cards() {
   return (
     <div className='cards'>
-      <h1>Check out these EPIC Destinations!</h1>
+      <h1>Check out these EPIC Locations!!</h1>
       <div className='cards__container'>
         <div className='cards__wrapper'>
           <ul className='cards__items'>
             <CardItem
-              src='images/img-9.jpg'
-              text='Explore the hidden waterfall deep inside the Amazon Jungle'
-              label='Adventure'
-              path="https://www.geeksforgeeks.org/"
+              src='images/Chapora_Fort.jpg'
+              text='Chapora Fort, located at the northern side of Goa, is famously called Dil Chahta Hai Fort. You can relive those moments by visiting it yourself.'
+              label='Explore'
+              path="https://en.wikipedia.org/wiki/Chapora_Fort"
             />
             <CardItem
-              src='images/img-2.jpg'
-              text='Travel through the Islands of Bali in a Private Cruise'
+              src='images/Grand.jpg'
+              text='Welcome to this award winning luxury destination resort overlooking the calm waters of Bambolim Bay.'
               label='Luxury'
-              path='/services'
+              path="https://www.hyatt.com/en-US/hotel/india/grand-hyatt-goa/goagh?&src=pfxswain_sem_pfx_search_google_india_rooms_sub.br_goa_eng_pfx_search_google_india_rooms_sub.br_name_goagh_eng_grand%20hyatt%20goa&mckv=s-dc_pcrid_495368669201_mtid_529dkt13792&gclid=Cj0KCQjwkruVBhCHARIsACVIiOxN5ayb_JOUTMdFCBsYy0aVQ_HcJuv-HVlNzP8nexl8TJvaXWVIHSwaAgNjEALw_wcB&gclsrc=aw.ds"
             />
           </ul>
           <ul className='cards__items'>
             <CardItem
-              src='images/img-3.jpg'
-              text='Set Sail in the Atlantic Ocean visiting Uncharted Waters'
+              src='images/The-Bom-Jesu-Church-in-Goa.jpg'
+              text='A towering structure in the Old Goa Church complex, the Bom Jesu church is famous. It houses the mortal remains of St. Francis Xavier, the patron saint of Goa. '
+              label='Church'
+              path="https://en.wikipedia.org/wiki/Basilica_of_Bom_Jesus1"
+            />
+            <CardItem
+               src='images/The-gorgeous-Dudhsagar-Falls.jpg'
+               text='The Dudhsagar falls are a must visit for any adventure or outdoor enthusiast. An ideal way to spend time here is to trek up to the falls.'
+               label='Adventure'
+               path="https://en.wikipedia.org/wiki/Dudhsagar_Falls"
+            />
+            <CardItem
+              src='images/Three-Kings-Chapel.jpg'
+              text='Speaking of the most haunted churches in Goa, the Three King’s Church is definitely the one that will appear on top of the list.'
               label='Mystery'
-              href="www.google.com"
-            />
-            <CardItem
-              src='images/img-4.jpg'
-              text='Experience Football on Top of the Himilayan Mountains'
-              label='Adventure'
-              path='/products'
-            />
-            <CardItem
-              src='images/img-8.jpg'
-              text='Ride through the Sahara Desert on a guided camel tour'
-              label='Adrenaline'
-              path='/sign-up'
+              path="https://lbb.in/goa/wander-haunted-spirits-3-kings-chapel/"
             />
           </ul>
         </div>

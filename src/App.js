@@ -37,6 +37,12 @@ import ErrorPage from '../src/components/pages/Error_404'
 import Logout from './components/Logout'
 import About_us from './components/AboutUs1'
 import ActivityView from './components/display_activities2'
+//import Forgot from '../src/components/pages/ForgotPassword'
+import Pay from './components/SuccessMessage'
+import Bookings from './components/ManageBooking'
+import ManageAccount from './components/ManageAccount1'
+import Forgot from './components/forgotPassword1'
+import Mailer from './components/mailer'
 
 class App extends Component {
 
@@ -84,6 +90,7 @@ class App extends Component {
       <Route path='/form' component={Form}/>
       <Route path='/Home' exact> <Home/> </Route>
       <Route path='/activity_view' component={ActivityView} />
+      <Route path='/Forgot' component={Forgot}/>
     
       <Route path='/sign-up'> <Login lg={this.loginHandler } status={this.state.auth} user={this.state.user}/> </Route>
       <Route path='/Flight' component={Flight}/>
@@ -96,6 +103,13 @@ class App extends Component {
       <Route path='/Error' component={ErrorPage}/>
       <Route path='/logout' component={Logout}/>
       <Route path='/About-us' component={About_us}/>
+      <Route path='/success' component={Pay}/>
+      <Route path='/booking' component={Bookings}/>
+      <Route path='/manage' component={ManageAccount}/>
+
+      <Route path='/forgot' component={Forgot}/>
+      <Route path='/Mailer' component={Mailer}/>
+      <Route component={ErrorPage}/>
     </Switch>
   </Router>  
     </>

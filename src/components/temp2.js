@@ -41,7 +41,7 @@ const App = () => {
           if (response.data.loggedIn == true) {
            
           }
-        });
+        }); 
       }, []);
     
     const validationSchema = Yup.object().shape({

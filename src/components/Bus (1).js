@@ -1,4 +1,4 @@
-mport logo from './logo.svg';
+import logo from './logo.svg';
 //import './personalDetails.css';
 import  React, {Component} from 'react'
 import {TextField} from "@material-ui/core"

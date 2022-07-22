@@ -13,9 +13,6 @@ function AboutUS1() {
                         <h4> About US </h4>
                         </div>
                         <div className="col-md-8 my-auto">
-                        <h6 className="float-end">
-                            Home / About Us
-                        </h6>
                         </div>
                     </div>
                 </div>
@@ -27,12 +24,10 @@ function AboutUS1() {
 </h5>
                     <div className="underline"></div>
                     <p>
-                    The ‘Plan-It:Goa Trip Planner” has been developed to override the problems prevailing in the practicing manual system.This software is supported to eliminate and in some cases reduce the hardships faced by this existing system.
-
-In the existing system the user has to compulsorily follow the itinerary that a package of a particular website offers.The user has no freedom to plan his/her itinerary.
-
-Our main objective is to create a website where the user will be able to plan his trip/tour according to his choices and the website will offer him a complete itinerary of his day-to-day activities.
-
+                    The ‘Lets Goa :Goa Trip Planner” has been developed to override the problems 
+                    prevailing in the practicing manual system.This web application is designed to 
+                    provide an information management system which is tourism relevant , well structured 
+                    and high satisafaction to user experience.
                     </p>
                 </div>
             </section>

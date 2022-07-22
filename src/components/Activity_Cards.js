@@ -28,6 +28,8 @@ const useStyles = theme => ({
       },
 });
 
+var submitted=false;
+
 
 class activity extends Component {
 
@@ -422,11 +424,16 @@ render(){
                     </Card>
             </div>
     </div>
+    <center>
 
     
+    <br/><br/>
+    <button type='submit' value="submit" className='btn btn-success btn-lg' onClick={this.onSubmit}>Submit</button>
+    <Link to='/activity_view' className='btn btn-primary btn-lg'>Procced</Link>
 
-    <Button type='submit' value="submit"  onClick={this.onSubmit}>Submit</Button>
-    <Link to="/activity_view">Procced</Link>
+    </center>
+
+
 
 </div>
     </>

@@ -13,6 +13,20 @@ import { useHistory } from 'react-router-dom';
 import {Button, Col, Container, Form, Row} from "react-bootstrap";
 //import error_page from '../components/pages/Error_404'
 
+import DarkTheme, { createTheme } from 'react-dark-theme'
+
+const lightTheme = {
+  background: 'white',
+  text: 'black',
+}
+ 
+const darkTheme = {
+  background: 'black',
+  text: 'white',
+}
+
+const myTheme = createTheme(darkTheme, lightTheme)
+
 const SignIn = (props) => {
 
   //alert(props.status);
@@ -75,8 +89,9 @@ const SignIn = (props) => {
   return (
     <div className="login-ct">
 
-    <div className="main">
-     <div className="sub-main">
+    <div className="main" style={{ backgroundColor: myTheme.background, color: myTheme.text }}>
+      
+     <div className="sub-main" style={{ backgroundColor: myTheme.background, color: myTheme.text }}>
        <div>
         <div className="imgs">
            <div className="container-image">
@@ -111,7 +126,7 @@ const SignIn = (props) => {
           <button id='bubble' onClick={login}>Login</button>
       </div>
             <p className="link">
-              <a href="#">Forgot password ?</a> Or <a href="/abc">Sign Up</a>
+              <a href="/Forgot">Forgot password ?</a> Or <a href="/abc">Sign Up</a>
             </p>
       </div>
 

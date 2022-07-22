@@ -1,16 +1,53 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
 
-const Error = () => {
-  return (              
-   <>
-   <div className="App">
-     <h1>404 Error Page</h1>
-     <p>Sorry, This page doesn't exist </p>
-     <NavLink to="/"> Go Back </NavLink>
-  </div>
- </>
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { Col, Row, Card, Image, Button, Container } from '@themesberg/react-bootstrap';
+import { useHistory } from 'react-router-dom';
+
+import { Link } from 'react-router-dom';
+
+//import { Routes } from "../../routes";
+//import NotFoundImage from "../images/popular-8.jpg";
+
+
+
+
+export default () => {
+
+  const history = useHistory();
+
+function handleSuccess(){
+  history.push('/');
+}
+
+  
+  return (
+    <main>
+      <section className="vh-10 d-flex align-items-center justify-content-center">
+        <Container>
+          <Row>
+            <Col xs={12} className="text-center d-flex align-items-center justify-content-center">
+              <div>
+                <Card.Link as={Link}>
+                  <Image src={'../images/404.svg'} className="img-fluid w-75" />
+                </Card.Link>
+                <h1 className="text-primary mt-5">
+                  Page not <span className="fw-bolder">found</span>
+                </h1>
+                <p className="lead my-4">
+                  Oops! Looks like you followed a bad link. If you think this is a
+                  problem with us, please tell us.
+            </p>
+                <Button variant="primary" className="animate-hover" onClick={handleSuccess}>
+                  <FontAwesomeIcon icon={faChevronLeft} className="animate-left-3 me-3 ms-2" />
+                  Go back home
+                </Button>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+      </section>
+    </main>
   );
 };
-
-export default Error;

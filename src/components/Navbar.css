@@ -16,6 +16,7 @@
   align-items: center;
   height: 80px;
   max-width: 1500px;
+  font:25px;
 }
 
 .my-navbar-logo {
@@ -41,7 +42,7 @@
   list-style: none;
   text-align: center;
   width: 60vw;
-  justify-content: end;
+  justify-content: right;
   margin-right: 2rem;
 }
 
@@ -63,8 +64,8 @@
   transition: all 0.2s ease-out;
 }
 
-.my-fa-bars {
-  color: #fff;
+.fa-bars {
+  color: white;
 }
 
 .my-nav-links-mobile {
@@ -124,18 +125,32 @@
     transform: translate(25%, 50%);
   }
 
+  .footer-subscription .btn{
+    color: #f9fafb;
+    font-size: 1.3rem;
+    background-color: transparent;
+    border: 1px solid whitesmoke;
+  }
+
+  .btn-mobile .btn{
+    color: #f9fafb;
+    font-size: 1.3rem;
+    background-color: transparent;
+    border: 1px solid whitesmoke;
+  }
+
   .my-menu-icon {
     display: block;
     position: absolute;
     top: 0;
     right: 0;
     transform: translate(-100%, 60%);
-    font-size: 1.8rem;
+    font-size: 2.5rem;
     cursor: pointer;
   }
 
-  .my-fa-times {
-    color: #fff;
+  .fa-times {
+    color: white;
     font-size: 2rem;
   }
 

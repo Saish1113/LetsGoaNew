@@ -2,8 +2,60 @@ import React from 'react';
 import './Footer.css';
 import { Button } from './Button';
 import { Link } from 'react-router-dom';
+import {
+  toast,
+  ToastContainer
+} from 'react-toastify';
+import Axios from 'axios';
+import {useState,useEffect} from 'react';
 
 function Footer() {
+
+  const [mail, setmail]=useState('');
+  const [loginStatus, setLoginStatus] = useState("");
+  const [serrmsg,setAErrmsg]=useState('');
+
+  const handleSubmition=(e)=>{
+    e.preventDefault();
+
+    setAErrmsg("");
+
+    register();
+    // navigate('/Flight');
+    document.getElementById('mail').value='';
+    
+
+ }
+
+  const register = () => {
+    Axios.post("http://localhost:3001/footer", {
+        
+        mail:mail,
+  
+       
+        
+     
+     
+      //password: passwordReg,
+    }).then((response) => {
+      console.log(response.data.message);
+      //setLoginStatus({message: "Personal Details is successfull"});
+      //console.log(loginStatus);
+      if(response.data.message=="success"){
+       toast.success('subscription is successfull');
+       var id=document.getElementById("mail");
+       id.innerHTML="";
+  
+       
+      }
+       else
+       {
+          toast.error("failure")
+       }
+    });
+    // toast.success('subscription is successfull');
+  };
+
   return (
     <div className='footer-container'>
       <section className='footer-subscription'>
@@ -21,7 +73,7 @@ function Footer() {
               type='email'
               placeholder='Your Email'
             />
-            <Button buttonStyle='btn--outline'>Subscribe</Button>
+            <Button  id="button1" onClick={handleSubmition} type="submit" style="color:red;">Subscribe</Button>
           </form>
         </div>
       </section>
@@ -29,28 +81,28 @@ function Footer() {
         <div className='footer-link-wrapper'>
           <div class='footer-link-items'>
             <h2>About Us</h2>
-            <Link to='/sign-up'>How it works</Link>
             <Link to='/'>Testimonials</Link>
             <Link to='/'>Careers</Link>
-            <Link to='/'>Investors</Link>
             <Link to='/'>Terms of Service</Link>
           </div>
           <div class='footer-link-items'>
+            <a href='/Mailer'>
             <h2>Contact Us</h2>
-            <Link to='/'>Contact</Link>
-            <Link to='/'>Support</Link>
-            <Link to='/'>Destinations</Link>
-            <Link to='/'>Sponsorships</Link>
+            <Link to='/'>Lets Goa Ltd.</Link>
+            <Link to='/'>MCA Department,Goa University</Link>
+            <Link to='/'>Email : <a>letsgoa@gmail.com</a></Link>
+            <Link to='/'>Phone : 1234567890/0987654321</Link>
+            </a>
           </div>
         </div>
         <div className='footer-link-wrapper'>
-          <div class='footer-link-items'>
+          {/* <div class='footer-link-items'>
             <h2>Videos</h2>
             <Link to='/'>Submit Video</Link>
             <Link to='/'>Ambassadors</Link>
             <Link to='/'>Agency</Link>
             <Link to='/'>Influencer</Link>
-          </div>
+          </div> */}
           <div class='footer-link-items'>
             <h2>Social Media</h2>
             <Link to='/'>Instagram</Link>
@@ -64,52 +116,50 @@ function Footer() {
         <div class='social-media-wrap'>
           <div class='footer-logo'>
             <Link to='/' className='social-logo'>
-              TRVL
+              LETS GOA
               <i class='fab fa-typo3' />
             </Link>
           </div>
-          <small class='website-rights'>TRVL © 2020</small>
           <div class='social-icons'>
-            <Link
+            <a
               class='social-icon-link facebook'
-              to='/'
+              href='https://www.facebook.com/officialgoatourism'
               target='_blank'
               aria-label='Facebook'
             >
               <i class='fab fa-facebook-f' />
-            </Link>
-            <Link
+            </a>
+            <a
               class='social-icon-link instagram'
-              to='/'
               target='_blank'
               aria-label='Instagram'
             >
               <i class='fab fa-instagram' />
-            </Link>
-            <Link
+            </a>
+            <a
               class='social-icon-link youtube'
-              to='/'
+              href='https://www.youtube.com/user/GoaTourismOfficial'
               target='_blank'
               aria-label='Youtube'
             >
               <i class='fab fa-youtube' />
-            </Link>
-            <Link
+            </a>
+            <a
               class='social-icon-link twitter'
-              to='/'
+              href='https://twitter.com/TourismGoa'
               target='_blank'
               aria-label='Twitter'
             >
               <i class='fab fa-twitter' />
-            </Link>
-            <Link
+            </a>
+            <a
               class='social-icon-link twitter'
-              to='/'
+              href='https://www.pinterest.com/tourismgoa'              
               target='_blank'
-              aria-label='LinkedIn'
+              aria-label='Pinterest'
             >
-              <i class='fab fa-linkedin' />
-            </Link>
+              <i class="fa-brands fa-pinterest"></i>
+            </a>
           </div>
         </div>
       </section>

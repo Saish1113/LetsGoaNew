@@ -48,19 +48,32 @@ function App() {
     const handleSubmition=(e)=>{
         e.preventDefault();
       
-        if(!Hotels || !Rooms || !Days || !Nights ){
-            alert("please fill All the field");
+        if(!Hotels ){
+            alert("please select the Hotel");
         }
+
+        if(!Rooms ){
+            alert("please enter the Rooms");
+        }
+
+        if(!Days ){
+            alert("please select the Days");
+        }
+
+        if(!Nights ){
+            alert("please select the Nights");
+        }
+
         else if(Rooms<0||Rooms==0){
-            alert("invalid no of travelers ") ;   
+            alert("invalid no of rooms") ;   
         }
 
         else if(Days<0||Days==0){
-            alert("invalid no of Adults ") ;   
+            alert("invalid no of days") ;   
         }
 
         else if(Nights<0||Nights==0){
-            alert("invalid no of Childerns");   
+            alert("invalid no of nights");   
         }
 
         else{

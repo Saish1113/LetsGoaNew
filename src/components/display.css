@@ -1,0 +1,9 @@
+.iternary_table .table{
+    font-size: 20px;
+}
+
+@media only screen and (max-width: 450px) {
+    .iternary_table .table{
+        font-size: 10px;
+    }
+  }
